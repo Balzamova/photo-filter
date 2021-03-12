@@ -1,3 +1,6 @@
+const inputs = document.querySelectorAll('.filters input');
+const outputs = document.querySelectorAll('.filters output');
+
 const editorBtns = document.querySelectorAll('.btn');
 const btnReset = document.querySelector('.btn-reset');
 const btnNext = document.querySelector('.btn-next');
@@ -8,7 +11,6 @@ const filters = document.querySelector('.filters');
 const currentImg = document.querySelector('#editor-image');
 
 const fullScreenBtn = document.querySelector('.fullscreen');
-
 
 const requestFullScreen = (element) => {
     var requestMethod = element.requestFullScreen
@@ -33,14 +35,15 @@ const removeClassActiveForBnts = () => {
 }
 
 const getRandomImage = (num) => {
-    num = [Math.floor(Math.random() * 19)+1];
-
+   num = [Math.floor(Math.random() * 20) +1];
+  
     if (num < 10) {
         number = '0' + num;
     } else {
         number = num;
     }
-    return number;
+
+    return number;      
 }
 
 const setImage = () => {
@@ -48,21 +51,43 @@ const setImage = () => {
    let hour = today.getHours();
 
    if (hour < 6) {
-       currentImg.src = `./assets/images/night/${getRandomImage()}.jpg`;
-      
+       currentImg.src = `./assets/images/night/${getRandomImage()}.jpg`;      
    } else if (hour < 12) {
        currentImg.src = `./assets/images/morning/${getRandomImage()}.jpg`;
    } else if (hour < 18) {
        currentImg.src = `./assets/images/day/${getRandomImage()}.jpg`;
    } else {
-       currentImg.src = `./assets/images/evening/${getRandomImage()}.jpg`;
+       currentImg.src = `./assets/images/evening/${getRandomImage()}.jpg`;       
    }
-  // console.log(currentImg.src); 
+   // console.log(currentImg.src); 
 }
 
 
 
 
+
+function changeOutput() {
+    const sizing = this.dataset.sizing || '';
+    document.documentElement.style.setProperty(`--${this.name}`, this.value + sizing);
+}
+
+inputs.forEach(input => input.addEventListener('input', changeOutput));
+
+filters.addEventListener('input', (event) => {
+    if (event.target.dataset.sizing != undefined) {
+        outputs[0].value = inputs[0].value;
+        outputs[1].value = inputs[1].value;
+        outputs[2].value = inputs[2].value;
+        outputs[3].value = inputs[3].value;
+        outputs[4].value = inputs[4].value;
+    }   
+});
+
+
+
+
+
+setImage();
 
 fullScreenBtn.addEventListener('click', () => {
     requestFullScreen(document.body);
@@ -78,7 +103,7 @@ btnReset.addEventListener('click', () => {
    
 });
 
-btnNext.addEventListener('click', () => {               //READY
+btnNext.addEventListener('click', () => {               //READY, к DL убрать рандом
     removeClassActiveForBnts();
     btnNext.classList.add('btn-active');
 
