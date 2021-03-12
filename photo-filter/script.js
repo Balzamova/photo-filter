@@ -62,32 +62,18 @@ const setImage = () => {
    // console.log(currentImg.src); 
 }
 
-
-
-
-
-function changeOutput() {
+function changeStylesForImage() {
     const sizing = this.dataset.sizing || '';
     document.documentElement.style.setProperty(`--${this.name}`, this.value + sizing);
 }
 
-inputs.forEach(input => input.addEventListener('input', changeOutput));
-
-filters.addEventListener('input', (event) => {
-    if (event.target.dataset.sizing != undefined) {
-        outputs[0].value = inputs[0].value;
-        outputs[1].value = inputs[1].value;
-        outputs[2].value = inputs[2].value;
-        outputs[3].value = inputs[3].value;
-        outputs[4].value = inputs[4].value;
-    }   
-});
-
-
-
-
-
-setImage();
+function resetStylesForImage() {
+    document.documentElement.style.setProperty(`--blur`, '0px');
+    document.documentElement.style.setProperty(`--invert`, '0%');
+    document.documentElement.style.setProperty(`--sepia`, '0%');
+    document.documentElement.style.setProperty(`--saturate`, '100%');
+    document.documentElement.style.setProperty(`--hue`, '0deg');    
+}
 
 fullScreenBtn.addEventListener('click', () => {
     requestFullScreen(document.body);
@@ -97,13 +83,36 @@ fullScreenBtn.addEventListener('click', () => {
     if (document.fullscreenElement) document.exitFullscreen();
 });
 
+inputs.forEach(input => input.addEventListener('input', changeStylesForImage));
+
+filters.addEventListener('input', (event) => {
+    if (event.target.dataset.sizing != undefined) {
+        for (i = 0; i < inputs.length; i++) {
+            outputs[i].value = inputs[i].value;
+        }
+    }   
+});
+
 btnReset.addEventListener('click', () => {
     removeClassActiveForBnts();
     btnReset.classList.add('btn-active');
    
+    outputs[0].value = 0;
+    outputs[1].value = 0;
+    outputs[2].value = 0;
+    outputs[3].value = 100;
+    outputs[4].value = 0;
+
+    inputs[0].value = 0;
+    inputs[1].value = 0;
+    inputs[2].value = 0;
+    inputs[3].value = 100;
+    inputs[4].value = 0;
+    
+    resetStylesForImage();
 });
 
-btnNext.addEventListener('click', () => {               //READY, к DL убрать рандом
+btnNext.addEventListener('click', () => {               
     removeClassActiveForBnts();
     btnNext.classList.add('btn-active');
 
@@ -120,3 +129,4 @@ btnSave.addEventListener('click', () => {
     btnSave.classList.add('btn-active');
 });
 
+setImage();
