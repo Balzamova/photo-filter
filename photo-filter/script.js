@@ -11,11 +11,12 @@ const btnSave = document.querySelector('.btn-save');
 const filters = document.querySelector('.filters');
 const editorBlock = document.querySelector('.editor');
 let currentImg = editorBlock.insertAdjacentHTML('beforeend', '<div id="editor-image"/></div>');
-currentImg = document.querySelector('#editor-image');
 
 const fullScreenBtn = document.querySelector('.fullscreen');
 
-let i = 0;
+let ind = 0;
+
+currentImg = document.querySelector('#editor-image');
 
 const requestFullScreen = (element) => {
     var requestMethod = element.requestFullScreen
@@ -47,17 +48,29 @@ const viewImage = (url) => {
     }
 }
 
-const getImage = () => {    
+const getImagePrev= () => {    
     let today = new Date();
     let hour = today.getHours();
     let imgSrc;
     let number;
-    const index = i % 20;
+    let index;
+
+    --ind;    
     
-    if (index <= 8) {
-        number = '0' + (index + 1);
+    if (ind < 0) {
+        index = 20;
+    } else if (ind === 0) {
+        index = 20
     } else {
-        number = (index + 1);
+        index = ind % 20;  
+    }
+    
+    if (ind <= 0) ind = 20; 
+          
+    if (index <= 9) {
+        number = '0' + (index);
+    } else {
+        number = (index);
     }        
 
     if (hour < 6) {
@@ -67,11 +80,51 @@ const getImage = () => {
     } else if (hour < 18) {
         imgSrc = `./assets/images/day/${number}`;
     } else {
-       imgSrc = `./assets/images/evening/${number}.jpg`;       
+        imgSrc = `./assets/images/evening/${number}.jpg`;       
+    }    
+    
+    viewImage(imgSrc);
+    
+    btnNext.disabled = true;
+    setTimeout(function() {
+        btnNext.disabled = false
+    }, 500);
+}
+
+const getImageNext = () => {    
+    let today = new Date();
+    let hour = today.getHours();
+    let imgSrc;
+    let number;
+    let index; 
+
+    ++ind;
+    
+    if (ind > 20) ind = 1;      
+  
+    if (ind === 20) {
+        index = 20;
+    } else {
+        index = ind % 20;
     }
         
-    i++;
-    viewImage(imgSrc);
+    if (index <= 9) {
+        number = '0' + index ;
+    } else {
+        number = index;
+    }        
+
+    if (hour < 6) {
+        imgSrc = `./assets/images/night/${number}`;
+    } else if (hour < 12) {
+        imgSrc = `./assets/images/morning/${number}`;
+    } else if (hour < 18) {
+        imgSrc = `./assets/images/day/${number}`;
+    } else {
+        imgSrc = `./assets/images/evening/${number}.jpg`;       
+    }
+        
+    viewImage(imgSrc);    
 
     btnNext.disabled = true;
     setTimeout(function() {
@@ -129,13 +182,18 @@ btnReset.addEventListener('click', () => {
     resetStylesForImage();
 });
 
+btnPrev.addEventListener('click', () => {
+    removeClassActiveForBnts();
+    btnPrev.classList.add('btn-active');
+
+    getImagePrev();
+});
+
 btnNext.addEventListener('click', () => {
     removeClassActiveForBnts();
     btnNext.classList.add('btn-active');
 
-
-
-    getImage();
+    getImageNext();
 });
 
 btnLoad.addEventListener('click', () => {
