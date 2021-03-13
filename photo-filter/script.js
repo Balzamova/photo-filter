@@ -3,14 +3,19 @@ const outputs = document.querySelectorAll('.filters output');
 
 const editorBtns = document.querySelectorAll('.btn');
 const btnReset = document.querySelector('.btn-reset');
+const btnPrev = document.querySelector('.btn-prev');
 const btnNext = document.querySelector('.btn-next');
 const btnLoad = document.querySelector('.btn-load');
 const btnSave = document.querySelector('.btn-save');
 
 const filters = document.querySelector('.filters');
-const currentImg = document.querySelector('#editor-image');
+const editorBlock = document.querySelector('.editor');
+let currentImg = editorBlock.insertAdjacentHTML('beforeend', '<div id="editor-image"/></div>');
+currentImg = document.querySelector('#editor-image');
 
 const fullScreenBtn = document.querySelector('.fullscreen');
+
+let i = 0;
 
 const requestFullScreen = (element) => {
     var requestMethod = element.requestFullScreen
@@ -34,32 +39,44 @@ const removeClassActiveForBnts = () => {
     });
 }
 
-const getRandomImage = (num) => {
-   num = [Math.floor(Math.random() * 20) +1];
-  
-    if (num < 10) {
-        number = '0' + num;
-    } else {
-        number = num;
+const viewImage = (url) => { 
+    const img = new Image();
+    img.src = url;
+    img.onload = () => { 
+        currentImg.style.backgroundImage = `url(${url})`;
     }
-
-    return number;      
 }
 
-const setImage = () => {
-   let today = new Date();
-   let hour = today.getHours();
+const getImage = () => {    
+    let today = new Date();
+    let hour = today.getHours();
+    let imgSrc;
+    let number;
+    const index = i % 20;
+    
+    if (index <= 8) {
+        number = '0' + (index + 1);
+    } else {
+        number = (index + 1);
+    }        
 
-   if (hour < 6) {
-       currentImg.src = `./assets/images/night/${getRandomImage()}.jpg`;      
-   } else if (hour < 12) {
-       currentImg.src = `./assets/images/morning/${getRandomImage()}.jpg`;
-   } else if (hour < 18) {
-       currentImg.src = `./assets/images/day/${getRandomImage()}.jpg`;
-   } else {
-       currentImg.src = `./assets/images/evening/${getRandomImage()}.jpg`;       
-   }
-   // console.log(currentImg.src); 
+    if (hour < 6) {
+        imgSrc = `./assets/images/night/${number}`;
+    } else if (hour < 12) {
+        imgSrc = `./assets/images/morning/${number}`;
+    } else if (hour < 18) {
+        imgSrc = `./assets/images/day/${number}`;
+    } else {
+       imgSrc = `./assets/images/evening/${number}.jpg`;       
+    }
+        
+    i++;
+    viewImage(imgSrc);
+
+    btnNext.disabled = true;
+    setTimeout(function() {
+        btnNext.disabled = false
+    }, 500);
 }
 
 function changeStylesForImage() {
@@ -72,7 +89,7 @@ function resetStylesForImage() {
     document.documentElement.style.setProperty(`--invert`, '0%');
     document.documentElement.style.setProperty(`--sepia`, '0%');
     document.documentElement.style.setProperty(`--saturate`, '100%');
-    document.documentElement.style.setProperty(`--hue`, '0deg');    
+    document.documentElement.style.setProperty(`--hue`, '0deg');
 }
 
 fullScreenBtn.addEventListener('click', () => {
@@ -90,13 +107,13 @@ filters.addEventListener('input', (event) => {
         for (i = 0; i < inputs.length; i++) {
             outputs[i].value = inputs[i].value;
         }
-    }   
+    }
 });
 
 btnReset.addEventListener('click', () => {
     removeClassActiveForBnts();
     btnReset.classList.add('btn-active');
-   
+
     outputs[0].value = 0;
     outputs[1].value = 0;
     outputs[2].value = 0;
@@ -108,15 +125,17 @@ btnReset.addEventListener('click', () => {
     inputs[2].value = 0;
     inputs[3].value = 100;
     inputs[4].value = 0;
-    
+
     resetStylesForImage();
 });
 
-btnNext.addEventListener('click', () => {               
+btnNext.addEventListener('click', () => {
     removeClassActiveForBnts();
     btnNext.classList.add('btn-active');
 
-    setImage();
+
+
+    getImage();
 });
 
 btnLoad.addEventListener('click', () => {
@@ -129,4 +148,3 @@ btnSave.addEventListener('click', () => {
     btnSave.classList.add('btn-active');
 });
 
-setImage();
