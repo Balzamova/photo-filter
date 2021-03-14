@@ -180,6 +180,15 @@ output {
     sepia(var(--sepia, 0%)) saturate(var(--saturate, 100%))
     hue-rotate(var(--hue, 0deg));
 }
+#editor-image img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+canvas {
+  display: none;
+}
 .fullscreen {
   position: fixed;
   top: -10px;
@@ -202,6 +211,7 @@ output {
   background-image: url('assets/svg/fullscreen-exit.svg');
 }
 .footer {
+  margin-top: 160px;
   border-top: 1px solid;
   border-image-slice: 1;
   border-image-source: linear-gradient(to left, #38495a, #a2abb3, #38495a);
@@ -294,6 +304,7 @@ output {
     max-width: 100%;
   }
   .fullscreen {
+    position: absolute;
     top: -9px;
     right: 0;
     width: 40px;
@@ -301,6 +312,9 @@ output {
   }
 }
 @media (max-width: 375px) {
+  #editor-image {
+    height: 70%;
+  }
   .btn {
     min-width: 145px;
   }

@@ -48,10 +48,25 @@ const viewImage = (url) => {
     }
 }
 
-const getImagePrev= () => {    
+const getImageNext = (n) => { 
     let today = new Date();
     let hour = today.getHours();
     let imgSrc;
+
+    if (hour < 6) {
+        imgSrc = `./assets/images/night/${n}.jpg`;
+    } else if (hour < 12) {
+        imgSrc = `./assets/images/morning/${n}.jpg`;
+    } else if (hour < 18) {
+        imgSrc = `./assets/images/day/${n}.jpg`;
+    } else {
+        imgSrc = `./assets/images/evening/${n}.jpg`;       
+    }
+        
+    viewImage(imgSrc);     
+}
+
+const getIndexPrev= () => {    
     let number;
     let index;
 
@@ -71,30 +86,12 @@ const getImagePrev= () => {
         number = '0' + (index);
     } else {
         number = (index);
-    }        
+    }      
 
-    if (hour < 6) {
-        imgSrc = `./assets/images/night/${number}`;
-    } else if (hour < 12) {
-        imgSrc = `./assets/images/morning/${number}`;
-    } else if (hour < 18) {
-        imgSrc = `./assets/images/day/${number}`;
-    } else {
-        imgSrc = `./assets/images/evening/${number}.jpg`;       
-    }    
-    
-    viewImage(imgSrc);
-    
-    btnNext.disabled = true;
-    setTimeout(function() {
-        btnNext.disabled = false
-    }, 500);
+    getImageNext(number);  
 }
 
-const getImageNext = () => {    
-    let today = new Date();
-    let hour = today.getHours();
-    let imgSrc;
+const getIndexNext = () => {    
     let number;
     let index; 
 
@@ -114,22 +111,7 @@ const getImageNext = () => {
         number = index;
     }        
 
-    if (hour < 6) {
-        imgSrc = `./assets/images/night/${number}`;
-    } else if (hour < 12) {
-        imgSrc = `./assets/images/morning/${number}`;
-    } else if (hour < 18) {
-        imgSrc = `./assets/images/day/${number}`;
-    } else {
-        imgSrc = `./assets/images/evening/${number}.jpg`;       
-    }
-        
-    viewImage(imgSrc);    
-
-    btnNext.disabled = true;
-    setTimeout(function() {
-        btnNext.disabled = false
-    }, 500);
+    getImageNext(number);      
 }
 
 function changeStylesForImage() {
@@ -186,14 +168,32 @@ btnPrev.addEventListener('click', () => {
     removeClassActiveForBnts();
     btnPrev.classList.add('btn-active');
 
-    getImagePrev();
+    if (document.querySelector('#loaded__img')) {
+        document.querySelector('#loaded__img').remove();
+    }
+
+    btnPrev.disabled = true;
+    setTimeout(function() {
+        btnPrev.disabled = false
+    }, 1000);
+
+    getIndexPrev();
 });
 
 btnNext.addEventListener('click', () => {
     removeClassActiveForBnts();
     btnNext.classList.add('btn-active');
 
-    getImageNext();
+    if (document.querySelector('#loaded__img')) {
+        document.querySelector('#loaded__img').remove();
+    }
+
+    btnNext.disabled = true;
+    setTimeout(function() {
+        btnNext.disabled = false
+    }, 1000);
+
+    getIndexNext();
 });
 
 btnLoad.addEventListener('click', () => {
