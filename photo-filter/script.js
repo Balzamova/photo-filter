@@ -10,10 +10,10 @@ const btnSave = document.querySelector('.btn-save');
 
 const filters = document.querySelector('.filters');
 const editorBlock = document.querySelector('.editor');
-let currentImg = editorBlock.insertAdjacentHTML('beforeend', '<div id="editor-image"/></div>');
-
+const fileInput = document.querySelector('input[type="file"]');
 const fullScreenBtn = document.querySelector('.fullscreen');
 
+let currentImg = editorBlock.insertAdjacentHTML('beforeend', '<div id="editor-image"></div>');
 let ind = 0;
 
 currentImg = document.querySelector('#editor-image');
@@ -199,8 +199,24 @@ btnNext.addEventListener('click', () => {
 btnLoad.addEventListener('click', () => {
     removeClassActiveForBnts();
     btnLoad.classList.add('btn-active');
-
 });
+
+fileInput.addEventListener('change', function(e) {    
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.src = reader.result;
+      img.id = 'loaded__img';
+
+      currentImg.innerHTML = "";
+      currentImg.append(img);
+    }
+    reader.readAsDataURL(file);
+
+    currentImg.style.backgroundImage = 'none';
+});
+
 btnSave.addEventListener('click', () => {
     removeClassActiveForBnts();
     btnSave.classList.add('btn-active');

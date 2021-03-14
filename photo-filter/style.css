@@ -190,7 +190,7 @@ canvas {
   display: none;
 }
 .fullscreen {
-  position: fixed;
+  position: absolute;
   top: -10px;
   right: 40px;
   width: 40px;
