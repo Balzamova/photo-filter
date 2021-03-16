@@ -133,10 +133,8 @@ function resetStylesForImage() {
 
 const getCurrentUrl = () => {
     let styles = getComputedStyle(currentImg);
-    let curStyleBackgroundUrl = styles.backgroundImage;
-
-    let urlFromImg = curStyleBackgroundUrl.match(/\/assets\/\w+\/\w+\/\d\d\.\w\w\w/im);
-
+    let urlFromImg  = styles.backgroundImage.match(/\/assets\/\w+\/\w+\/\d\d\.\w\w\w/im);
+    
     let url = `.${urlFromImg}`;
     drawImage(url)
 }
