@@ -13,10 +13,14 @@ const editorBlock = document.querySelector('.editor');
 const fileInput = document.querySelector('input[type="file"]');
 const fullScreenBtn = document.querySelector('.fullscreen');
 
-let currentImg = editorBlock.insertAdjacentHTML('beforeend', '<div id="editor-image"></div>');
 let ind = 0;
 
+let currentImg = editorBlock.insertAdjacentHTML('beforeend', '<div id="editor-image"></div>');
 currentImg = document.querySelector('#editor-image');
+
+let canvas = editorBlock.insertAdjacentHTML('beforeend', '<canvas></canvas>');
+canvas = document.querySelector('canvas');
+let ctx = canvas.getContext("2d");
 
 const requestFullScreen = (element) => {
     var requestMethod = element.requestFullScreen
@@ -127,6 +131,43 @@ function resetStylesForImage() {
     document.documentElement.style.setProperty(`--hue`, '0deg');
 }
 
+const getCurrentUrl = () => {
+    let styles = getComputedStyle(currentImg);
+    let curStyleBackgroundUrl = styles.backgroundImage;
+
+    let urlFromImg = curStyleBackgroundUrl.match(/\/assets\/\w+\/\w+\/\d\d\.\w\w\w/im);
+
+    let url = `.${urlFromImg}`;
+    drawImage(url)
+}
+
+function drawImage(url) {
+    console.log(url);
+
+    const img = new Image();
+    img.setAttribute('crossOrigin', 'anonymous');
+    img.src = url;
+    img.onload = function () {
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        const filters = [];
+        const sizes = ['px', '%', '%', '%', 'deg'];
+        for (i = 0; i < inputs.length; i++) {
+            filters.push(`${inputs[i].name}(${outputs[i].value}${sizes[i]})`);
+        }
+
+        const stringOfFilters = filters.join(', ');
+        let str = '';
+        for (i = 0; i < stringOfFilters.length; i++) {
+            if (stringOfFilters[i] !== ',') { str += stringOfFilters[i] }
+        }
+
+        ctx.filter = str.replace('hue', 'hue-rotate');
+        ctx.drawImage(img, 0, 0);
+    };
+}
+
 fullScreenBtn.addEventListener('click', () => {
     requestFullScreen(document.body);
 })
@@ -219,5 +260,14 @@ fileInput.addEventListener('change', function(e) {
 btnSave.addEventListener('click', () => {
     removeClassActiveForBnts();
     btnSave.classList.add('btn-active');
-});
 
+    getCurrentUrl();
+
+    setTimeout(() => {
+        var link = document.createElement('a');
+        link.download = 'download.png';
+        link.href = canvas.toDataURL();
+        link.click();
+        link.delete;
+    }, 500);
+});
