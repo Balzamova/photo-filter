@@ -13,6 +13,13 @@ body {
   font-family: 'Open Sans', Arial, Helvetica, sans-serif;
   overflow-x: hidden;
 }
+.wrapper {
+  min-height: 100%;
+  min-width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 .header {
   text-align: center;
   width: 100%;
@@ -35,6 +42,7 @@ body {
   width: 100%;
   max-width: 1140px;
   margin: 0 auto;
+  flex: 1 1 auto;
 }
 label:not(.btn) {
   display: block;
@@ -160,6 +168,7 @@ output {
   justify-content: flex-start;
   width: 100%;
   max-width: 60%;
+  height: 490px;
 }
 :root {
   --blur: 0px;
@@ -168,18 +177,31 @@ output {
   --saturate: 100%;
   --hue: 0deg;
 }
-img {
+#editor-image {
   height: 100%;
   width: 100%;
   max-height: 520px;
   max-width: 830px;
-  object-fit: contain;
+  background: url(./assets/images/day/00.jpg) center/contain no-repeat;
+  transition: background-image 2s ease-in-out;
   filter: blur(var(--blur, 0px)) invert(var(--invert, 0%))
     sepia(var(--sepia, 0%)) saturate(var(--saturate, 100%))
     hue-rotate(var(--hue, 0deg));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#editor-image img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+canvas {
+  display: none;
 }
 .fullscreen {
-  position: fixed;
+  position: absolute;
   top: -10px;
   right: 40px;
   width: 40px;
@@ -200,6 +222,7 @@ img {
   background-image: url('assets/svg/fullscreen-exit.svg');
 }
 .footer {
+  margin-top: 160px;
   border-top: 1px solid;
   border-image-slice: 1;
   border-image-source: linear-gradient(to left, #38495a, #a2abb3, #38495a);
@@ -271,6 +294,8 @@ img {
     min-width: 45%;
     border-radius: 2px;
   }
+  .btn-reset {order: 1;}
+  
   .btn-container {
     flex-wrap: wrap;
     margin-left: -10px;
@@ -290,6 +315,7 @@ img {
     max-width: 100%;
   }
   .fullscreen {
+    position: absolute;
     top: -9px;
     right: 0;
     width: 40px;
@@ -297,6 +323,9 @@ img {
   }
 }
 @media (max-width: 375px) {
+  #editor-image {
+    height: 70%;
+  }
   .btn {
     min-width: 145px;
   }
