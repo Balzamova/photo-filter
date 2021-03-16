@@ -174,7 +174,7 @@ output {
   width: 100%;
   max-height: 520px;
   max-width: 830px;
-  background: url(./assets/img/img.jpg) center/contain no-repeat;
+  background: url(./assets/images/day/00.jpg) center/contain no-repeat;
   transition: background-image 2s ease-in-out;
   filter: blur(var(--blur, 0px)) invert(var(--invert, 0%))
     sepia(var(--sepia, 0%)) saturate(var(--saturate, 100%))

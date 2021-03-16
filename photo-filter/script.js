@@ -149,17 +149,16 @@ btnReset.addEventListener('click', () => {
     removeClassActiveForBnts();
     btnReset.classList.add('btn-active');
 
-    outputs[0].value = 0;
-    outputs[1].value = 0;
-    outputs[2].value = 0;
-    outputs[3].value = 100;
-    outputs[4].value = 0;
+    for (let i = 0; i < outputs.length; i++) {
+        if (i === 3) {
+            outputs[i].value = 100;
+            inputs[i].value = 100;
 
-    inputs[0].value = 0;
-    inputs[1].value = 0;
-    inputs[2].value = 0;
-    inputs[3].value = 100;
-    inputs[4].value = 0;
+        } else {
+            outputs[i].value = 0;
+            inputs[i].value = 0;
+        }
+    }
 
     resetStylesForImage();
 });
