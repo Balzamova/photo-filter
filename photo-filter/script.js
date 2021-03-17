@@ -133,9 +133,19 @@ function resetStylesForImage() {
 
 const getCurrentUrl = () => {
     let styles = getComputedStyle(currentImg);
-    let urlFromImg  = styles.backgroundImage.match(/\/assets\/\w+\/\w+\/\d\d\.\w\w\w/im);
-    
-    let url = `.${urlFromImg}`;
+    let url;
+
+    if (styles.backgroundImage === 'none') {       
+        let base64 = document.querySelector('#loaded__img').src.replace(/^data\:image\/(jpeg|jpg|png)\;base64\,/, '');                                                
+        let buffer = Uint8Array.from(atob(base64), c => c.charCodeAt(0)); // 
+        console.log(buffer);
+
+        let blob = new Blob([buffer], {type: 'image/png'});
+        url = URL.createObjectURL(blob);        
+    } else {
+        url = `.${styles.backgroundImage.match(/\/assets\/\w+\/\w+\/\d\d\.\w\w\w/im)}`;
+    }
+     
     drawImage(url)
 }
 
@@ -143,8 +153,10 @@ function drawImage(url) {
     console.log(url);
 
     const img = new Image();
-    img.setAttribute('crossOrigin', 'anonymous');
     img.src = url;
+    img.setAttribute('crossOrigin', 'anonymous');
+    img.setAttribute('href', url);
+
     img.onload = function () {
         canvas.width = img.width;
         canvas.height = img.height;
