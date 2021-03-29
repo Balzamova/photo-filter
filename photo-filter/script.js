@@ -13,7 +13,7 @@ const editorBlock = document.querySelector('.editor');
 const fileInput = document.querySelector('input[type="file"]');
 const fullScreenBtn = document.querySelector('.fullscreen');
 
-let ind = 0;
+let ind = 1;
 
 let currentImg = editorBlock.insertAdjacentHTML('beforeend', '<div id="editor-image"></div>');
 currentImg = document.querySelector('#editor-image');
@@ -53,6 +53,8 @@ const viewImage = (url) => {
 }
 
 const getImageNext = (n) => { 
+ if (!n) n = '01';
+
     let today = new Date();
     let hour = today.getHours();
     let imgSrc;
@@ -281,3 +283,5 @@ btnSave.addEventListener('click', () => {
         link.delete;
     }, 500);
 });
+
+getImageNext();
