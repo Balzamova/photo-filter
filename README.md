@@ -1,6 +1,6 @@
 # JS development : photo-filter
 
-## My ready page-proof: [link](https://balzamova.github.io/photo-filter/photo-filter/)
+## Project: [link](https://balzamova.github.io/photo-filter/photo-filter/)
 
 ### Used frameworks: 
 1. **HTML**
@@ -8,7 +8,7 @@
 3. **JS**
  - *using js to work with files*
  - *loading local files into the application*
- - *save files to your computer with applied styles*
+ - *save files to local computer with applied styles*
  - *working with dates in js*
  - *working with the Canvas API*
  - *working with fullscreen Api* 
