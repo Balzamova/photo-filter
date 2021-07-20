@@ -1,4 +1,4 @@
-# JS development : photo-filter
+# Photo-filter
 
 ## Project: [link](https://balzamova.github.io/photo-filter/photo-filter/)
 
