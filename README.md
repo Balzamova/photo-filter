@@ -1,6 +1,6 @@
 # Photo-filter
 
-## Project: [link](https://balzamova.github.io/photo-filter/photo-filter/)
+## Demo: [link](https://balzamova.github.io/photo-filter/photo-filter/)
 
 ### Used frameworks: 
 1. **HTML**
